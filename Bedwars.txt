@@ -223,7 +223,7 @@ timeLabel.Size = UDim2.new(1, 0, 0, 25)
 timeLabel.Position = UDim2.new(0, 0, 0, 232)
 timeLabel.BackgroundTransparency = 1
 timeLabel.Text = "Tiempo: 0m 0s"
-timeLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
+timeLabel.TextColor3 = Color3.fromRG
 timeLabel.TextSize = 13
 timeLabel.Font = Enum.Font.GothamBlack
 timeLabel.ZIndex = 101
@@ -238,14 +238,11 @@ spawn(function()
     end
 end)
 
-for _, tabBtn in ipairs(TabList:GetChildren()) do
-    if tabBtn:IsA("TextButton") then
-        local oldClick = tabBtn.MouseButton1Click
-        tabBtn.MouseButton1Click:Connect(function()
-            infoFrame.Visible = false
-        end)
-    end
-end
+OpenButton.MouseButton1Click:Connect(function()
+    infoFrame.Visible = false
+    ScreenGui.Enabled = false
+    MainGui.Enabled = true
+end)
 
 local MinimizeButton = Instance.new("TextButton")
 MinimizeButton.Size = UDim2.new(0, 35, 0, 35)
