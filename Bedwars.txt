@@ -131,15 +131,38 @@ FixCorner.BorderSizePixel = 0
 FixCorner.Parent = TopBar
 
 local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Size = UDim2.new(1, -50, 1, 0)
+TitleLabel.Size = UDim2.new(1, -50, 0, 16)
 TitleLabel.Position = UDim2.new(0, 15, 0, 0)
 TitleLabel.BackgroundTransparency = 1
-TitleLabel.Text = "BED WARS"
-TitleLabel.TextColor3 = Color3.fromRGB(180, 230, 255)
-TitleLabel.TextSize = 15
+TitleLabel.Text = "Tyking x Wazin2 Bedwars Script"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
+TitleLabel.TextSize = 14
 TitleLabel.Font = Enum.Font.GothamBold
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 TitleLabel.Parent = TopBar
+
+local executor = identifyexecutor and identifyexecutor() or "Desconocido"
+local startTime = tick()
+
+local infoLabel = Instance.new("TextLabel")
+infoLabel.Size = UDim2.new(1, -50, 0, 14)
+infoLabel.Position = UDim2.new(0, 15, 0, 16)
+infoLabel.BackgroundTransparency = 1
+infoLabel.Text = "Executor: " .. executor .. " | Usuario: " .. player.Name .. " | Cuenta: " .. player.AccountAge .. " dias"
+infoLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+infoLabel.TextSize = 9
+infoLabel.Font = Enum.Font.Gotham
+infoLabel.TextXAlignment = Enum.TextXAlignment.Left
+infoLabel.Parent = TopBar
+
+spawn(function()
+    while wait(10) do
+        local elapsed = math.floor(tick() - startTime)
+        local mins = math.floor(elapsed / 60)
+        local secs = elapsed % 60
+        infoLabel.Text = "Executor: " .. executor .. " | Usuario: " .. player.Name .. " | Cuenta: " .. player.AccountAge .. " dias | Tiempo: " .. mins .. "m " .. secs .. "s"
+    end
+end)
 
 local MinimizeButton = Instance.new("TextButton")
 MinimizeButton.Size = UDim2.new(0, 35, 0, 35)
