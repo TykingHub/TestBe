@@ -794,6 +794,55 @@ CreateToggleOnly(FarmTab, "Auto Farm Iron", function(state) autoFarmIron = state
 CreateToggleOnly(FarmTab, "Auto Farm Gold", function(state) autoFarmGold = state end)
 CreateToggleOnly(FarmTab, "Auto Farm Diamond", function(state) autoFarmDiamond = state end)
 CreateToggleOnly(FarmTab, "Auto Farm Emerald", function(state) autoFarmEmerald = state end)
+CreateToggleOnly(CombatTab, "Triggerbot (Arco)", function(state) triggerbotEnabled = state end)
+CreateToggleOnly(CombatTab, "Speed Attack", function(state) speedAttackEnabled = state end)
+CreateToggleOnly(CombatTab, "Combo", function(state) comboEnabled = state end)
+CreateToggleOnly(CombatTab, "Silent Aim Proyectiles", function(state) silentAimProyectilEnabled = state end)
+CreateToggleOnly(CombatTab, "Pearl Clutch", function(state) pearlClutchEnabled = state end)
+CreateToggleOnly(CombatTab, "Auto Gapple", function(state) autoGappleEnabled = state end)
+
+CreateToggleOnly(DefenseTab, "Auto Wool", function(state) autoWoolEnabled = state end)
+CreateFeature(DefenseTab, "Wool Block", 1, 5, 1, function(val)
+    local blocks = {"white", "red", "blue", "green", "yellow"}
+    woolBlock = blocks[val]
+end, function(state) end)
+CreateToggleOnly(DefenseTab, "Alerta Enemigo Cercano", function(state) alertEnemyEnabled = state end)
+CreateToggleOnly(DefenseTab, "Auto Repair", function(state) autoRepairEnabled = state end)
+CreateToggleOnly(DefenseTab, "Anti Puente", function(state) antiPuenteEnabled = state end)
+CreateToggleOnly(DefenseTab, "Fireball Defensa", function(state) fireballDefenseEnabled = state end)
+
+CreateToggleOnly(MoveTab, "Auto Sprint", function(state) autoSprintEnabled = state end)
+CreateToggleOnly(MoveTab, "TP Base", function(state) tpBaseEnabled = state end)
+CreateToggleOnly(MoveTab, "Long Jump", function(state) longJumpEnabled = state end)
+CreateToggleOnly(MoveTab, "TP Cama", function(state) tpCamaEnabled = state end)
+CreateToggleOnly(MoveTab, "TP Jugador", function(state) tpJugadorEnabled = state end)
+CreateToggleOnly(MoveTab, "Camara Libre", function(state) cameraLibreEnabled = state end)
+
+CreateToggleOnly(CombatTab, "Auto Destroy Bed", function(state) autoDestroyBedEnabled = state end)
+CreateToggleOnly(CombatTab, "Kill All", function(state) killAllEnabled = state end)
+CreateToggleOnly(PlayerTab, "Invisible", function(state) invisibleEnabled = state end)
+
+CreateFeature(CombatTab, "Dar Item", 1, 7, 1, function(val)
+    local items = {"sword", "armor", "pickaxe", "axe", "blocks", "bow", "arrows"}
+    giveItemType = items[val]
+end, function(state) giveItemEnabled = state end)
+
+CreateToggleOnly(VisualTab, "Radar", function(state) radarEnabled = state end)
+CreateToggleOnly(VisualTab, "ESP Trampas", function(state) espTrampasEnabled = state end)
+CreateToggleOnly(VisualTab, "Rango Jugadores", function(state) rangoEnabled = state end)
+
+CreateToggleOnly(TrollTab, "SpinBot", function(state) spinBotEnabled = state end)
+CreateToggleOnly(TrollTab, "Crash", function(state) crashEnabled = state end)
+CreateToggleOnly(TrollTab, "Auto GG", function(state) autoGGEnabled = state end)
+CreateToggleOnly(TrollTab, "Auto Bailar", function(state) autoBailarEnabled = state end)
+
+CreateToggleOnly(FarmTab, "Auto Colector", function(state) autoColectorEnabled = state end)
+CreateToggleOnly(FarmTab, "Auto Gapple Farm", function(state) autoGappleFarmEnabled = state end)
+
+CreateToggleOnly(InfoTab, "Tiempo de Partida", function(state) tiempoPartidaEnabled = state end)
+CreateToggleOnly(InfoTab, "Auto Report", function(state) autoReportEnabled = state end)
+CreateToggleOnly(InfoTab, "Ver Inventario", function(state) verInventarioEnabled = state end)
+CreateToggleOnly(InfoTab, "Log de Muertes", function(state) logMuertesEnabled = state end)
 
 CreateFeature(CombatTab, "Auto Hit (Alcance)", 3, 15, 8, function(val) autoHitRange = val end, function(state) autoHitEnabled = state end)
 
