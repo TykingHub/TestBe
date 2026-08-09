@@ -1,0 +1,1086 @@
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local playerGui = player:FindFirstChild("PlayerGui") or CoreGui
+
+if playerGui:FindFirstChild("CustomOpenGui") then playerGui.CustomOpenGui:Destroy() end
+if playerGui:FindFirstChild("CustomMainGui") then playerGui.CustomMainGui:Destroy() end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "CustomOpenGui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = playerGui
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 260, 0, 45)
+MainFrame.Position = UDim2.new(0.5, -130, 0.01, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+MainFrame.BackgroundTransparency = 0.2
+MainFrame.BorderSizePixel = 0
+MainFrame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(0, 191, 255)
+UIStroke.Thickness = 2
+UIStroke.Parent = MainFrame
+
+local DragButton = Instance.new("TextButton")
+DragButton.Name = "DragButton"
+DragButton.Size = UDim2.new(0, 45, 1, 0)
+DragButton.Position = UDim2.new(0, 0, 0, 0)
+DragButton.BackgroundTransparency = 1
+DragButton.Text = "＋"
+DragButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DragButton.TextSize = 22
+DragButton.Font = Enum.Font.SourceSansBold
+DragButton.Parent = MainFrame
+
+local Divider = Instance.new("Frame")
+Divider.Name = "Divider"
+Divider.Size = UDim2.new(0, 2, 0, 25)
+Divider.Position = UDim2.new(0, 48, 0.5, -12.5)
+Divider.BackgroundColor3 = Color3.fromRGB(0, 191, 255)
+Divider.BackgroundTransparency = 0.3
+Divider.BorderSizePixel = 0
+Divider.Parent = MainFrame
+
+local OpenButton = Instance.new("TextButton")
+OpenButton.Name = "OpenButton"
+OpenButton.Size = UDim2.new(1, -55, 1, 0)
+OpenButton.Position = UDim2.new(0, 55, 0, 0)
+OpenButton.BackgroundTransparency = 1
+OpenButton.Text = "Open Script"
+OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+OpenButton.TextSize = 16
+OpenButton.Font = Enum.Font.GothamBold
+OpenButton.TextXAlignment = Enum.TextXAlignment.Left
+OpenButton.ZIndex = 2
+OpenButton.Parent = MainFrame
+
+local dragging = false
+local mousePos, framePos
+
+DragButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        mousePos = input.Position
+        framePos = MainFrame.Position
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - mousePos
+        MainFrame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+local MainGui = Instance.new("ScreenGui")
+MainGui.Name = "CustomMainGui"
+MainGui.ResetOnSpawn = false
+MainGui.Enabled = false
+MainGui.Parent = playerGui
+
+local Window = Instance.new("Frame")
+Window.Name = "Window"
+Window.Size = UDim2.new(0, 520, 0, 340)
+Window.Position = UDim2.new(0.5, -260, 0.5, -170)
+Window.BackgroundColor3 = Color3.fromRGB(10, 20, 30)
+Window.BackgroundTransparency = 0.1
+Window.BorderSizePixel = 0
+Window.Parent = MainGui
+
+local WindowCorner = Instance.new("UICorner")
+WindowCorner.CornerRadius = UDim.new(0, 12)
+WindowCorner.Parent = Window
+
+local WindowStroke = Instance.new("UIStroke")
+WindowStroke.Color = Color3.fromRGB(0, 120, 180)
+WindowStroke.Thickness = 1.5
+WindowStroke.Parent = Window
+
+local TopBar = Instance.new("Frame")
+TopBar.Size = UDim2.new(1, 0, 0, 35)
+TopBar.BackgroundColor3 = Color3.fromRGB(15, 30, 45)
+TopBar.BorderSizePixel = 0
+TopBar.Parent = Window
+
+local TopBarCorner = Instance.new("UICorner")
+TopBarCorner.CornerRadius = UDim.new(0, 12)
+TopBarCorner.Parent = TopBar
+
+local FixCorner = Instance.new("Frame")
+FixCorner.Size = UDim2.new(1, 0, 0, 5)
+FixCorner.Position = UDim2.new(0, 0, 1, -5)
+FixCorner.BackgroundColor3 = Color3.fromRGB(15, 30, 45)
+FixCorner.BorderSizePixel = 0
+FixCorner.Parent = TopBar
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, -50, 0, 16)
+TitleLabel.Position = UDim2.new(0, 15, 0, 0)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "Tyking x Wazin2 Bedwars Script"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
+TitleLabel.TextSize = 14
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.Parent = TopBar
+
+OpenButton.MouseButton1Click:Connect(function()
+    infoFrame.Visible = false
+    ScreenGui.Enabled = false
+    MainGui.Enabled = true
+end)
+
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Size = UDim2.new(0, 35, 0, 35)
+MinimizeButton.Position = UDim2.new(1, -38, 0, 0)
+MinimizeButton.BackgroundTransparency = 1
+MinimizeButton.Text = "-"
+MinimizeButton.TextColor3 = Color3.fromRGB(180, 230, 255)
+MinimizeButton.TextSize = 22
+MinimizeButton.Font = Enum.Font.GothamBold
+MinimizeButton.Parent = TopBar
+
+local TabList = Instance.new("ScrollingFrame")
+TabList.Name = "TabList"
+TabList.Size = UDim2.new(0, 130, 1, -45)
+TabList.Position = UDim2.new(0, 0, 0, 40)
+TabList.BackgroundTransparency = 1
+TabList.ScrollBarThickness = 2
+TabList.Parent = Window
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 5)
+UIListLayout.Parent = TabList
+
+local Container = Instance.new("Frame")
+Container.Name = "Container"
+Container.Size = UDim2.new(1, -145, 1, -50)
+Container.Position = UDim2.new(0, 140, 0, 45)
+Container.BackgroundTransparency = 1
+Container.Parent = Window
+
+local FirstTab = true
+local function CreateTab(tabName)
+    local TabButton = Instance.new("TextButton")
+    TabButton.Name = tabName .. "Button"
+    TabButton.Size = UDim2.new(1, -10, 0, 35)
+    TabButton.Position = UDim2.new(0, 5, 0, 0)
+    TabButton.BackgroundColor3 = Color3.fromRGB(15, 25, 38)
+    TabButton.BackgroundTransparency = 0.5
+    TabButton.Text = tabName
+    TabButton.TextColor3 = Color3.fromRGB(170, 210, 240)
+    TabButton.TextSize = 13
+    TabButton.Font = Enum.Font.GothamMedium
+    TabButton.Parent = TabList
+
+    local TabCorner = Instance.new("UICorner")
+    TabCorner.CornerRadius = UDim.new(0, 8)
+    TabCorner.Parent = TabButton
+
+    local TabContent = Instance.new("ScrollingFrame")
+    TabContent.Name = tabName .. "Content"
+    TabContent.Size = UDim2.new(1, 0, 1, 0)
+    TabContent.Position = UDim2.new(0, 0, 0, 0)
+    TabContent.BackgroundTransparency = 1
+    TabContent.Visible = false
+    TabContent.ScrollBarThickness = 3
+    TabContent.Parent = Container
+
+    local ContentLayout = Instance.new("UIListLayout")
+    ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ContentLayout.Padding = UDim.new(0, 8)
+    ContentLayout.Parent = TabContent
+
+    if FirstTab then
+        TabContent.Visible = true
+        TabButton.BackgroundColor3 = Color3.fromRGB(0, 100, 160)
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        FirstTab = false
+    end
+
+    TabButton.MouseButton1Click:Connect(function()
+        for _, content in pairs(Container:GetChildren()) do
+            if content:IsA("ScrollingFrame") then content.Visible = false end
+        end
+        for _, btn in pairs(TabList:GetChildren()) do
+            if btn:IsA("TextButton") then
+                btn.BackgroundColor3 = Color3.fromRGB(15, 25, 38)
+                btn.TextColor3 = Color3.fromRGB(170, 210, 240)
+            end
+        end
+        TabContent.Visible = true
+        TabButton.BackgroundColor3 = Color3.fromRGB(0, 100, 160)
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    end)
+
+    return TabContent
+end
+
+local CombatTab = CreateTab("Combate")
+local PlayerTab = CreateTab("Jugador")
+local VisualTab = CreateTab("Visuales")
+local TrollTab = CreateTab("Troll")
+local FarmTab = CreateTab("Farm")
+local ConfigTab = CreateTab("Configuracion")
+local DefenseTab = CreateTab("Defensa")
+local MoveTab = CreateTab("Movimiento")
+local InfoTab = CreateTab("Info")
+
+local function CreateFeature(parentTab, title, minVal, maxVal, defaultVal, callbackSlide, callbackToggle)
+    local Frame = Instance.new("Frame")
+    Frame.Size = UDim2.new(1, -10, 0, 65)
+    Frame.BackgroundColor3 = Color3.fromRGB(15, 25, 38)
+    Frame.BackgroundTransparency = 0.4
+    Frame.Parent = parentTab
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 8)
+    Corner.Parent = Frame
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(1, -70, 0, 25)
+    Label.Position = UDim2.new(0, 10, 0, 5)
+    Label.BackgroundTransparency = 1
+    Label.Text = title
+    Label.TextColor3 = Color3.fromRGB(200, 235, 255)
+    Label.TextSize = 13
+    Label.Font = Enum.Font.GothamBold
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Parent = Frame
+
+    local ToggleBtn = Instance.new("TextButton")
+    ToggleBtn.Size = UDim2.new(0, 50, 0, 22)
+    ToggleBtn.Position = UDim2.new(1, -60, 0, 6)
+    ToggleBtn.BackgroundColor3 = Color3.fromRGB(25, 60, 90)
+    ToggleBtn.Text = "OFF"
+    ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleBtn.TextSize, ToggleBtn.Font = 11, Enum.Font.GothamBold
+    ToggleBtn.Parent = Frame
+
+    local ToggleCorner = Instance.new("UICorner")
+    ToggleCorner.CornerRadius = UDim.new(0, 4)
+    ToggleCorner.Parent = ToggleBtn
+
+    local active = false
+    ToggleBtn.MouseButton1Click:Connect(function()
+        active = not active
+        if active then
+            ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 220)
+            ToggleBtn.Text = "ON"
+        else
+            ToggleBtn.BackgroundColor3 = Color3.fromRGB(25, 60, 90)
+            ToggleBtn.Text = "OFF"
+        end
+        if callbackToggle then callbackToggle(active) end
+    end)
+
+    local SliderBar = Instance.new("Frame")
+    SliderBar.Size = UDim2.new(1, -20, 0, 6)
+    SliderBar.Position = UDim2.new(0, 10, 0, 45)
+    SliderBar.BackgroundColor3 = Color3.fromRGB(20, 45, 70)
+    SliderBar.BorderSizePixel = 0
+    SliderBar.Parent = Frame
+
+    local SliderCorner = Instance.new("UICorner")
+    SliderCorner.CornerRadius = UDim.new(1, 0)
+    SliderCorner.Parent = SliderBar
+
+    local SliderFill = Instance.new("Frame")
+    SliderFill.Size = UDim2.new((defaultVal - minVal)/(maxVal - minVal), 0, 1, 0)
+    SliderFill.BackgroundColor3 = Color3.fromRGB(0, 191, 255)
+    SliderFill.BorderSizePixel = 0
+    SliderFill.Parent = SliderBar
+
+    local FillCorner = Instance.new("UICorner")
+    FillCorner.CornerRadius = UDim.new(1, 0)
+    FillCorner.Parent = SliderFill
+
+    local ValueLabel = Instance.new("TextLabel")
+    ValueLabel.Size = UDim2.new(0, 60, 0, 20)
+    ValueLabel.Position = UDim2.new(1, -70, 0, 33)
+    ValueLabel.BackgroundTransparency = 1
+    ValueLabel.Text = tostring(defaultVal)
+    ValueLabel.TextColor3 = Color3.fromRGB(170, 210, 240)
+    ValueLabel.TextSize = 11
+    ValueLabel.Font = Enum.Font.Gotham
+    ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
+    ValueLabel.Parent = Frame
+
+    local sliding = false
+    SliderBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            sliding = true
+        end
+    end)
+
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            sliding = false
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if sliding and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local pos = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
+            SliderFill.Size = UDim2.new(pos, 0, 1, 0)
+            local val = math.floor(minVal + (maxVal - minVal) * pos)
+            ValueLabel.Text = tostring(val)
+            if callbackSlide then callbackSlide(val) end
+        end
+    end)
+end
+
+local function CreateToggleOnly(parentTab, title, callbackToggle)
+    local Frame = Instance.new("Frame")
+    Frame.Size = UDim2.new(1, -10, 0, 42)
+    Frame.BackgroundColor3 = Color3.fromRGB(15, 25, 38)
+    Frame.BackgroundTransparency = 0.4
+    Frame.Parent = parentTab
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 8)
+    Corner.Parent = Frame
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(1, -70, 1, 0)
+    Label.Position = UDim2.new(0, 10, 0, 0)
+    Label.BackgroundTransparency = 1
+    Label.Text = title
+    Label.TextColor3 = Color3.fromRGB(200, 235, 255)
+    Label.TextSize = 13
+    Label.Font = Enum.Font.GothamBold
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Parent = Frame
+
+    local ToggleBtn = Instance.new("TextButton")
+    ToggleBtn.Size = UDim2.new(0, 50, 0, 22)
+    ToggleBtn.Position = UDim2.new(1, -60, 0.5, -11)
+    ToggleBtn.BackgroundColor3 = Color3.fromRGB(25, 60, 90)
+    ToggleBtn.Text = "OFF"
+    ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleBtn.TextSize, ToggleBtn.Font = 11, Enum.Font.GothamBold
+    ToggleBtn.Parent = Frame
+
+    local ToggleCorner = Instance.new("UICorner")
+    ToggleCorner.CornerRadius = UDim.new(0, 4)
+    ToggleCorner.Parent = ToggleBtn
+
+    local active = false
+    ToggleBtn.MouseButton1Click:Connect(function()
+        active = not active
+        if active then
+            ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 220)
+            ToggleBtn.Text = "ON"
+        else
+            ToggleBtn.BackgroundColor3 = Color3.fromRGB(25, 60, 90)
+            ToggleBtn.Text = "OFF"
+        end
+        if callbackToggle then callbackToggle(active) end
+    end)
+end
+
+local currentEspPlayerColor = Color3.fromRGB(0, 191, 255)
+local currentEspLineColor = Color3.fromRGB(0, 191, 255)
+
+local function CreateColorSelector(parentTab, title, onColorChanged)
+    local Frame = Instance.new("Frame")
+    Frame.Size = UDim2.new(1, -10, 0, 72)
+    Frame.BackgroundColor3 = Color3.fromRGB(15, 25, 38)
+    Frame.BackgroundTransparency = 0.4
+    Frame.Parent = parentTab
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 8)
+    Corner.Parent = Frame
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(1, -20, 0, 25)
+    Label.Position = UDim2.new(0, 10, 0, 4)
+    Label.BackgroundTransparency = 1
+    Label.Text = title
+    Label.TextColor3 = Color3.fromRGB(200, 235, 255)
+    Label.TextSize = 13
+    Label.Font = Enum.Font.GothamBold
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Parent = Frame
+
+    local ColorContainer = Instance.new("Frame")
+    ColorContainer.Size = UDim2.new(1, -20, 0, 32)
+    ColorContainer.Position = UDim2.new(0, 10, 0, 32)
+    ColorContainer.BackgroundTransparency = 1
+    ColorContainer.Parent = Frame
+
+    local UIHoriz = Instance.new("UIListLayout")
+    UIHoriz.FillDirection = Enum.FillDirection.Horizontal
+    UIHoriz.SortOrder = Enum.SortOrder.LayoutOrder
+    UIHoriz.Padding = UDim.new(0, 6)
+    UIHoriz.Parent = ColorContainer
+
+    local colorList = {
+        {Name = "Amarillo", Color = Color3.fromRGB(255, 225, 0)},
+        {Name = "Azul", Color = Color3.fromRGB(0, 100, 255)},
+        {Name = "Morado", Color = Color3.fromRGB(160, 32, 240)},
+        {Name = "Naranja", Color = Color3.fromRGB(255, 140, 0)},
+        {Name = "Celeste", Color = Color3.fromRGB(0, 191, 255)}
+    }
+
+    for _, item in ipairs(colorList) do
+        local ColorBtn = Instance.new("TextButton")
+        ColorBtn.Size = UDim2.new(0, 63, 1, 0)
+        ColorBtn.BackgroundColor3 = item.Color
+        ColorBtn.Text = item.Name
+        ColorBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ColorBtn.TextSize = 10
+        ColorBtn.Font = Enum.Font.GothamBold
+        ColorBtn.Parent = ColorContainer
+
+        local BtnCorner = Instance.new("UICorner")
+        BtnCorner.CornerRadius = UDim.new(0, 6)
+        BtnCorner.Parent = ColorBtn
+
+        ColorBtn.MouseButton1Click:Connect(function()
+            if onColorChanged then onColorChanged(item.Color) end
+        end)
+    end
+end
+
+CreateColorSelector(ConfigTab, "Color: GUI Flotante", function(col)
+    MainFrame.BackgroundColor3 = col
+    MainFrame.BackgroundTransparency = 0.2
+end)
+
+CreateColorSelector(ConfigTab, "Color: Ventana Principal", function(col)
+    Window.BackgroundColor3 = col
+    Window.BackgroundTransparency = 0.1
+end)
+
+CreateColorSelector(ConfigTab, "Color: Boton y Bordes", function(col)
+    UIStroke.Color = col
+    Divider.BackgroundColor3 = col
+    Divider.BackgroundTransparency = 0.3
+    WindowStroke.Color = col
+end)
+
+CreateColorSelector(ConfigTab, "Color: ESP Lineas", function(col)
+    currentEspLineColor = col
+    for _, p in pairs(Players:GetPlayers()) do
+        if p.Character then
+            local container = p.Character:FindFirstChild("TracerContainer")
+            if container then
+                local line = container:FindFirstChild("LineBeam")
+                if line then line.Color = col end
+            end
+        end
+    end
+end)
+
+CreateColorSelector(ConfigTab, "Color: ESP Jugadores", function(col)
+    currentEspPlayerColor = col
+    for _, p in pairs(Players:GetPlayers()) do
+        if p.Character then
+            local folder = p.Character:FindFirstChild("PlayerESPFolder")
+            if folder then
+                local hl = folder:FindFirstChild("CustomESP")
+                if hl then hl.FillColor = col end
+            end
+        end
+    end
+end)
+
+local function CreateResetButton(parentTab, title, onReset)
+    local Frame = Instance.new("Frame")
+    Frame.Size = UDim2.new(1, -10, 0, 48)
+    Frame.BackgroundColor3 = Color3.fromRGB(25, 15, 20)
+    Frame.BackgroundTransparency = 0.4
+    Frame.Parent = parentTab
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 8)
+    Corner.Parent = Frame
+
+    local ResetBtn = Instance.new("TextButton")
+    ResetBtn.Size = UDim2.new(1, -20, 1, -10)
+    ResetBtn.Position = UDim2.new(0, 10, 0, 5)
+    ResetBtn.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+    ResetBtn.Text = title
+    ResetBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ResetBtn.TextSize = 13
+    ResetBtn.Font = Enum.Font.GothamBold
+    ResetBtn.Parent = Frame
+
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 6)
+    BtnCorner.Parent = ResetBtn
+
+    ResetBtn.MouseButton1Click:Connect(function()
+        if onReset then onReset() end
+    end)
+end
+
+CreateResetButton(ConfigTab, "Restablecer Colores (Reset)", function()
+    MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    MainFrame.BackgroundTransparency = 0.2
+    Window.BackgroundColor3 = Color3.fromRGB(10, 20, 30)
+    Window.BackgroundTransparency = 0.1
+    UIStroke.Color = Color3.fromRGB(0, 191, 255)
+    Divider.BackgroundColor3 = Color3.fromRGB(0, 191, 255)
+    Divider.BackgroundTransparency = 0.3
+    WindowStroke.Color = Color3.fromRGB(0, 120, 180)
+    currentEspPlayerColor = Color3.fromRGB(0, 191, 255)
+    currentEspLineColor = Color3.fromRGB(0, 191, 255)
+    for _, p in pairs(Players:GetPlayers()) do
+        if p.Character then
+            local folder = p.Character:FindFirstChild("PlayerESPFolder")
+            if folder then
+                local hl = folder:FindFirstChild("CustomESP")
+                if hl then hl.FillColor = currentEspPlayerColor end
+            end
+            local container = p.Character:FindFirstChild("TracerContainer")
+            if container then
+                local line = container:FindFirstChild("LineBeam")
+                if line then line.Color = currentEspLineColor end
+            end
+        end
+    end
+end)
+
+local espPlayersActive = false
+local tracersActive = false
+
+local function setupPlayerESP(p)
+    if p == player then return end
+    p.CharacterAdded:Connect(function(char)
+        wait(0.5)
+        if espPlayersActive then
+            local espFolder = Instance.new("Folder")
+            espFolder.Name = "PlayerESPFolder"
+            espFolder.Parent = char
+            local hl = Instance.new("Highlight")
+            hl.Name = "CustomESP"
+            hl.Adornee = char
+            hl.FillColor = currentEspPlayerColor
+            hl.FillTransparency = 0.5
+            hl.OutlineTransparency = 1
+            hl.Parent = espFolder
+        end
+        if tracersActive then
+            local tracerFolder = Instance.new("Folder")
+            tracerFolder.Name = "TracerContainer"
+            tracerFolder.Parent = char
+            local part = Instance.new("Part")
+            part.Size = Vector3.new(0.5, 0.5, 0.5)
+            part.Transparency = 1
+            part.CanCollide = false
+            part.Anchored = true
+            part.Name = "TargetPoint"
+            part.Parent = tracerFolder
+            local linePart = Instance.new("Part")
+            linePart.Size = Vector3.new(0.1, 0.1, 1)
+            linePart.Transparency = 0.2
+            linePart.Color = currentEspLineColor
+            linePart.Material = Enum.Material.Neon
+            linePart.CanCollide = false
+            linePart.Anchored = true
+            linePart.Name = "LineBeam"
+            linePart.Parent = tracerFolder
+        end
+    end)
+end
+
+for _, p in pairs(Players:GetPlayers()) do
+    setupPlayerESP(p)
+end
+Players.PlayerAdded:Connect(setupPlayerESP)
+
+local killAuraEnabled = false
+local killAuraDist = 20
+local speedEnabled = false
+local speedVal = 16
+local jumpEnabled = false
+local jumpVal = 50
+local hitboxEnabled = false
+local hitboxSize = 5
+local pullEnabled = false
+local autoFarmIron = false
+local autoFarmGold = false
+local autoFarmDiamond = false
+local autoFarmEmerald = false
+local autoHitEnabled = false
+local autoHitRange = 8
+local autoBridgeEnabled = false
+local autoBuyEnabled = false
+local flyEnabled = false
+local flySpeed = 50
+local noclipEnabled = false
+local espChestsEnabled = false
+local selectedItem = "sword"
+local autoBuyItems = {"sword", "armor", "pickaxe", "axe", "blocks", "bow", "arrows"}
+local currentItemIndex = 1
+
+local silentAimEnabled = false
+local aimbotEnabled = false
+local aimbotFOV = false
+local fovRadius = 150
+local autoBowEnabled = false
+local autoFireballEnabled = false
+local killAuraRealEnabled = false
+local autoPearlEnabled = false
+local antiKBEnabled = false
+local reachEnabled = false
+local reachDist = 6
+local autoDefendEnabled = false
+local bedAlertEnabled = false
+local scaffoldEnabled = false
+local teleportIron = false
+local teleportGold = false
+local teleportDiamond = false
+local teleportEmerald = false
+local autoVoidEnabled = false
+local bunnyHopEnabled = false
+local espIronEnabled = false
+local espGoldEnabled = false
+local espDiamondEnabled = false
+local espEmeraldEnabled = false
+local espBedsEnabled = false
+local fullbrightEnabled = false
+local chamsEnabled = false
+local autoClickerEnabled = false
+local autoUpgradeEnabled = false
+local autoCollectEnabled = false
+local playerInfoEnabled = false
+local bedInfoEnabled = false
+local resourceCounterEnabled = false
+local triggerbotEnabled = false
+local speedAttackEnabled = false
+local autoSprintEnabled = false
+local tpBaseEnabled = false
+local longJumpEnabled = false
+local radarEnabled = false
+local spinBotEnabled = false
+local crashEnabled = false
+local autoColectorEnabled = false
+local comboEnabled = false
+local autoWoolEnabled = false
+local woolBlock = "white"
+local giveItemEnabled = false
+local giveItemType = "sword"
+local alertEnemyEnabled = false
+local tpCamaEnabled = false
+local tpJugadorEnabled = false
+local autoDestroyBedEnabled = false
+local killAllEnabled = false
+local invisibleEnabled = false
+local tiempoPartidaEnabled = false
+local autoRepairEnabled = false
+local cameraLibreEnabled = false
+local autoReportEnabled = false
+local verInventarioEnabled = false
+local pearlClutchEnabled = false
+local autoGappleEnabled = false
+local fireballDefenseEnabled = false
+local antiPuenteEnabled = false
+local autoGGEnabled = false
+local autoBailarEnabled = false
+local silentAimProyectilEnabled = false
+local rangoEnabled = false
+local espTrampasEnabled = false
+local logMuertesEnabled = false
+local gameStartTime = tick()
+
+CreateFeature(CombatTab, "Kill Aura (Distancia)", 5, 50, 20, function(val) killAuraDist = val end, function(state) killAuraEnabled = state end)
+
+CreateFeature(PlayerTab, "Velocidad (Speed)", 16, 100, 16, function(val) speedVal = val end, function(state)
+    speedEnabled = state
+    if not state and player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.WalkSpeed = 16
+    end
+end)
+
+CreateFeature(PlayerTab, "Poder de Salto", 50, 200, 50, function(val) jumpVal = val end, function(state)
+    jumpEnabled = state
+    if not state and player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.JumpPower = 50
+    end
+end)
+
+CreateToggleOnly(VisualTab, "ESP Jugadores", function(state)
+    espPlayersActive = state
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= player and p.Character then
+            local folder = p.Character:FindFirstChild("PlayerESPFolder")
+            if state and not folder then
+                local newFolder = Instance.new("Folder")
+                newFolder.Name = "PlayerESPFolder"
+                newFolder.Parent = p.Character
+                local highlight = Instance.new("Highlight")
+                highlight.Name = "CustomESP"
+                highlight.Adornee = p.Character
+                highlight.FillColor = currentEspPlayerColor
+                highlight.FillTransparency = 0.5
+                highlight.OutlineTransparency = 1
+                highlight.Parent = newFolder
+            elseif not state and folder then
+                folder:Destroy()
+            end
+        end
+    end
+end)
+
+CreateToggleOnly(VisualTab, "ESP Lineas", function(state)
+    tracersActive = state
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= player and p.Character then
+            local existing = p.Character:FindFirstChild("TracerContainer")
+            if state and not existing then
+                local folder = Instance.new("Folder")
+                folder.Name = "TracerContainer"
+                folder.Parent = p.Character
+                local part = Instance.new("Part")
+                part.Size = Vector3.new(0.5, 0.5, 0.5)
+                part.Transparency = 1
+                part.CanCollide = false
+                part.Anchored = true
+                part.Name = "TargetPoint"
+                part.Parent = folder
+                local linePart = Instance.new("Part")
+                linePart.Size = Vector3.new(0.1, 0.1, 1)
+                linePart.Transparency = 0.2
+                linePart.Color = currentEspLineColor
+                linePart.Material = Enum.Material.Neon
+                linePart.CanCollide = false
+                linePart.Anchored = true
+                linePart.Name = "LineBeam"
+                linePart.Parent = folder
+            elseif not state and existing then
+                existing:Destroy()
+            end
+        end
+    end
+end)
+
+CreateFeature(CombatTab, "Hitbox Extender", 5, 500, 5, function(val) hitboxSize = val end, function(state)
+    hitboxEnabled = state
+    if not state then
+        for _, p in pairs(Players:GetPlayers()) do
+            if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+                p.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
+                p.Character.HumanoidRootPart.Transparency = 1
+                p.Character.HumanoidRootPart.CanCollide = true
+            end
+        end
+    end
+end)
+
+CreateToggleOnly(CombatTab, "Traer Jugadores al Frente", function(state) pullEnabled = state end)
+
+CreateToggleOnly(FarmTab, "Auto Farm Iron", function(state) autoFarmIron = state end)
+CreateToggleOnly(FarmTab, "Auto Farm Gold", function(state) autoFarmGold = state end)
+CreateToggleOnly(FarmTab, "Auto Farm Diamond", function(state) autoFarmDiamond = state end)
+CreateToggleOnly(FarmTab, "Auto Farm Emerald", function(state) autoFarmEmerald = state end)
+CreateToggleOnly(CombatTab, "Triggerbot (Arco)", function(state) triggerbotEnabled = state end)
+CreateToggleOnly(CombatTab, "Speed Attack", function(state) speedAttackEnabled = state end)
+CreateToggleOnly(CombatTab, "Combo", function(state) comboEnabled = state end)
+CreateToggleOnly(CombatTab, "Silent Aim Proyectiles", function(state) silentAimProyectilEnabled = state end)
+CreateToggleOnly(CombatTab, "Pearl Clutch", function(state) pearlClutchEnabled = state end)
+CreateToggleOnly(CombatTab, "Auto Gapple", function(state) autoGappleEnabled = state end)
+
+CreateToggleOnly(DefenseTab, "Auto Wool", function(state) autoWoolEnabled = state end)
+CreateFeature(DefenseTab, "Wool Block", 1, 5, 1, function(val)
+    local blocks = {"white", "red", "blue", "green", "yellow"}
+    woolBlock = blocks[val]
+end, function(state) end)
+CreateToggleOnly(DefenseTab, "Alerta Enemigo Cercano", function(state) alertEnemyEnabled = state end)
+CreateToggleOnly(DefenseTab, "Auto Repair", function(state) autoRepairEnabled = state end)
+CreateToggleOnly(DefenseTab, "Anti Puente", function(state) antiPuenteEnabled = state end)
+CreateToggleOnly(DefenseTab, "Fireball Defensa", function(state) fireballDefenseEnabled = state end)
+
+CreateToggleOnly(MoveTab, "Auto Sprint", function(state) autoSprintEnabled = state end)
+CreateToggleOnly(MoveTab, "TP Base", function(state) tpBaseEnabled = state end)
+CreateToggleOnly(MoveTab, "Long Jump", function(state) longJumpEnabled = state end)
+CreateToggleOnly(MoveTab, "TP Cama", function(state) tpCamaEnabled = state end)
+CreateToggleOnly(MoveTab, "TP Jugador", function(state) tpJugadorEnabled = state end)
+CreateToggleOnly(MoveTab, "Camara Libre", function(state) cameraLibreEnabled = state end)
+
+CreateToggleOnly(CombatTab, "Auto Destroy Bed", function(state) autoDestroyBedEnabled = state end)
+CreateToggleOnly(CombatTab, "Kill All", function(state) killAllEnabled = state end)
+CreateToggleOnly(PlayerTab, "Invisible", function(state) invisibleEnabled = state end)
+
+CreateFeature(CombatTab, "Dar Item", 1, 7, 1, function(val)
+    local items = {"sword", "armor", "pickaxe", "axe", "blocks", "bow", "arrows"}
+    giveItemType = items[val]
+end, function(state) giveItemEnabled = state end)
+
+CreateToggleOnly(VisualTab, "Radar", function(state) radarEnabled = state end)
+CreateToggleOnly(VisualTab, "ESP Trampas", function(state) espTrampasEnabled = state end)
+CreateToggleOnly(VisualTab, "Rango Jugadores", function(state) rangoEnabled = state end)
+
+CreateToggleOnly(TrollTab, "SpinBot", function(state) spinBotEnabled = state end)
+CreateToggleOnly(TrollTab, "Crash", function(state) crashEnabled = state end)
+CreateToggleOnly(TrollTab, "Auto GG", function(state) autoGGEnabled = state end)
+CreateToggleOnly(TrollTab, "Auto Bailar", function(state) autoBailarEnabled = state end)
+
+CreateToggleOnly(FarmTab, "Auto Colector", function(state) autoColectorEnabled = state end)
+CreateToggleOnly(FarmTab, "Auto Gapple Farm", function(state) autoGappleFarmEnabled = state end)
+
+CreateToggleOnly(InfoTab, "Tiempo de Partida", function(state) tiempoPartidaEnabled = state end)
+CreateToggleOnly(InfoTab, "Auto Report", function(state) autoReportEnabled = state end)
+CreateToggleOnly(InfoTab, "Ver Inventario", function(state) verInventarioEnabled = state end)
+CreateToggleOnly(InfoTab, "Log de Muertes", function(state) logMuertesEnabled = state end)
+
+CreateFeature(CombatTab, "Auto Hit (Alcance)", 3, 15, 8, function(val) autoHitRange = val end, function(state) autoHitEnabled = state end)
+
+CreateToggleOnly(CombatTab, "Auto Bridge", function(state) autoBridgeEnabled = state end)
+
+CreateToggleOnly(CombatTab, "Auto Buy", function(state) autoBuyEnabled = state end)
+
+CreateFeature(CombatTab, "Auto Buy Item", 1, #autoBuyItems, 1, function(val)
+    currentItemIndex = val
+    selectedItem = autoBuyItems[val]
+end, function(state) end)
+
+CreateFeature(PlayerTab, "Fly Speed", 10, 200, 50, function(val) flySpeed = val end, function(state)
+    flyEnabled = state
+    if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+        if state then
+            player.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+        else
+            player.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+        end
+    end
+end)
+
+CreateToggleOnly(PlayerTab, "Noclip", function(state) noclipEnabled = state end)
+
+CreateToggleOnly(VisualTab, "ESP Cofres", function(state) espChestsEnabled = state end)
+
+CreateToggleOnly(CombatTab, "Silent Aim", function(state) silentAimEnabled = state end)
+CreateToggleOnly(CombatTab, "Aimbot", function(state) aimbotEnabled = state end)
+CreateToggleOnly(CombatTab, "Auto Bow", function(state) autoBowEnabled = state end)
+CreateToggleOnly(CombatTab, "Auto Fireball", function(state) autoFireballEnabled = state end)
+CreateToggleOnly(CombatTab, "KillAura Real", function(state) killAuraRealEnabled = state end)
+CreateToggleOnly(CombatTab, "Auto Pearl", function(state) autoPearlEnabled = state end)
+CreateToggleOnly(CombatTab, "Anti KB", function(state) antiKBEnabled = state end)
+CreateFeature(CombatTab, "Reach", 4, 12, 6, function(val) reachDist = val end, function(state) reachEnabled = state end)
+CreateFeature(CombatTab, "Aimbot FOV", 50, 360, 150, function(val) fovRadius = val end, function(state) aimbotFOV = state end)
+
+CreateToggleOnly(DefenseTab, "Auto Defend", function(state) autoDefendEnabled = state end)
+CreateToggleOnly(DefenseTab, "Alerta de Cama", function(state) bedAlertEnabled = state end)
+
+CreateToggleOnly(MoveTab, "Scaffold", function(state) scaffoldEnabled = state end)
+CreateToggleOnly(MoveTab, "TP Iron", function(state) teleportIron = state end)
+CreateToggleOnly(MoveTab, "TP Gold", function(state) teleportGold = state end)
+CreateToggleOnly(MoveTab, "TP Diamond", function(state) teleportDiamond = state end)
+CreateToggleOnly(MoveTab, "TP Emerald", function(state) teleportEmerald = state end)
+CreateToggleOnly(MoveTab, "Auto Void", function(state) autoVoidEnabled = state end)
+CreateToggleOnly(MoveTab, "Bunny Hop", function(state) bunnyHopEnabled = state end)
+
+CreateToggleOnly(VisualTab, "ESP Iron", function(state) espIronEnabled = state end)
+CreateToggleOnly(VisualTab, "ESP Gold", function(state) espGoldEnabled = state end)
+CreateToggleOnly(VisualTab, "ESP Diamond", function(state) espDiamondEnabled = state end)
+CreateToggleOnly(VisualTab, "ESP Emerald", function(state) espEmeraldEnabled = state end)
+CreateToggleOnly(VisualTab, "ESP Camas", function(state) espBedsEnabled = state end)
+CreateToggleOnly(VisualTab, "Fullbright", function(state) fullbrightEnabled = state end)
+CreateToggleOnly(VisualTab, "Chams", function(state) chamsEnabled = state end)
+
+CreateToggleOnly(FarmTab, "Auto Clicker", function(state) autoClickerEnabled = state end)
+CreateToggleOnly(FarmTab, "Auto Upgrade", function(state) autoUpgradeEnabled = state end)
+CreateToggleOnly(FarmTab, "Auto Recolectar", function(state) autoCollectEnabled = state end)
+
+CreateToggleOnly(InfoTab, "Player Info", function(state) playerInfoEnabled = state end)
+CreateToggleOnly(InfoTab, "Bed Info", function(state) bedInfoEnabled = state end)
+CreateToggleOnly(InfoTab, "Resource Counter", function(state) resourceCounterEnabled = state end)
+
+local function buyItem(itemName)
+    local items = {
+        ["sword"] = {"Sword", "Iron Sword", "Espada"},
+        ["armor"] = {"Armor", "Iron Armor", "Armadura"},
+        ["pickaxe"] = {"Pickaxe", "Pico"},
+        ["axe"] = {"Axe", "Hacha"},
+        ["blocks"] = {"Blocks", "Bloques", "Wool"},
+        ["bow"] = {"Bow", "Arco"},
+        ["arrows"] = {"Arrows", "Flechas"}
+    }
+    local names = items[itemName] or {itemName}
+    local found = false
+    for _, v in ipairs(workspace:GetDescendants()) do
+        if v:IsA("ClickDetector") or v:IsA("ProximityPrompt") then
+            for _, n in ipairs(names) do
+                if v.Parent and string.find(string.lower(v.Parent.Name), string.lower(n)) then
+                    found = true
+                    fireclickdetector(v)
+                    pcall(function() v:InputHoldBegin() end)
+                    return true
+                end
+            end
+        end
+    end
+    if not found and autoBuyEnabled then
+        local notif = Instance.new("Frame")
+        notif.Size = UDim2.new(0, 250, 0, 40)
+        notif.Position = UDim2.new(0.5, -125, 0, -50)
+        notif.BackgroundColor3 = Color3.fromRGB(180, 40, 40)
+        notif.BorderSizePixel = 0
+        notif.Parent = ScreenGui
+        Instance.new("UICorner", notif).CornerRadius = UDim.new(0, 6)
+        local txt = Instance.new("TextLabel")
+        txt.Size = UDim2.new(1, 0, 1, 0)
+        txt.BackgroundTransparency = 1
+        txt.Text = "No material suficiente"
+        txt.TextColor3 = Color3.fromRGB(255, 255, 255)
+        txt.TextSize = 14
+        txt.Font = Enum.Font.GothamBold
+        txt.Parent = notif
+        notif:TweenPosition(UDim2.new(0.5, -125, 0, 10), "Out", "Quad", 0.5)
+        wait(2)
+        notif:TweenPosition(UDim2.new(0.5, -125, 0, -50), "In", "Quad", 0.5)
+        wait(0.5)
+        notif:Destroy()
+    end
+    return false
+end
+
+spawn(function() while wait(1) do if autoBuyEnabled then buyItem(selectedItem) end end end)
+
+spawn(function() while wait(0.3) do if triggerbotEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") if tool and string.find(string.lower(tool.Name), "bow") then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("Head") then local pos = workspace.CurrentCamera:WorldToViewportPoint(p.Character.Head.Position) if pos.Z > 0 and (Vector2.new(pos.X, pos.Y) - workspace.CurrentCamera.ViewportSize/2).Magnitude < 100 then tool:Activate() break end end end end end end end)
+
+spawn(function() while wait(0.1) do if speedAttackEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") if tool then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") and (player.Character.HumanoidRootPart.Position - p.Character.HumanoidRootPart.Position).Magnitude < 10 then tool:Activate() break end end end end end end)
+
+spawn(function() while wait(0.2) do if autoSprintEnabled and player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.WalkSpeed = 24 end end end)
+
+spawn(function() while wait(0.3) do if tpBaseEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "spawn") then player.Character.HumanoidRootPart.CFrame = v.CFrame + Vector3.new(0, 5, 0) break end end end end end)
+
+spawn(function() while wait(0.5) do if spinBotEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then player.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(30), 0) end end end)
+
+spawn(function() while wait(0.2) do if autoColectorEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and (string.find(string.lower(v.Name), "diamond") or string.find(string.lower(v.Name), "emerald") or string.find(string.lower(v.Name), "iron") or string.find(string.lower(v.Name), "gold")) then if (hrp.Position - v.Position).Magnitude < 15 then hrp.CFrame = v.CFrame + Vector3.new(0, 3, 0) break end end end end end end)
+
+spawn(function() while wait(0.3) do if comboEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") if tool then tool:Activate() wait(0.05) tool:Activate() end end end end)
+
+spawn(function() while wait(0.5) do if autoWoolEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart local tool = player.Character:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool") if tool then if tool.Parent == player.Backpack then tool.Parent = player.Character wait(0.1) end local VirtualInputManager = game:GetService("VirtualInputManager") VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0) wait(0.05) VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0) end end end end)
+
+spawn(function() while wait(0.5) do if giveItemEnabled and player.Character then local items = {["sword"] = "Sword", ["armor"] = "Armor", ["pickaxe"] = "Pickaxe", ["axe"] = "Axe", ["blocks"] = "Blocks", ["bow"] = "Bow", ["arrows"] = "Arrows"} local itemName = items[giveItemType] for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("ClickDetector") and v.Parent and string.find(string.lower(v.Parent.Name), string.lower(itemName)) then fireclickdetector(v) break end end end end end)
+
+spawn(function() while wait(1) do if alertEnemyEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then if (hrp.Position - p.Character.HumanoidRootPart.Position).Magnitude < 20 then local notif = Instance.new("Frame") notif.Size = UDim2.new(0, 250, 0, 40) notif.Position = UDim2.new(0.5, -125, 0, -50) notif.BackgroundColor3 = Color3.fromRGB(255, 140, 0) notif.BorderSizePixel = 0 notif.Parent = ScreenGui Instance.new("UICorner", notif).CornerRadius = UDim.new(0, 6) local txt = Instance.new("TextLabel") txt.Size = UDim2.new(1, 0, 1, 0) txt.BackgroundTransparency = 1 txt.Text = "¡Enemigo cerca!" txt.TextColor3 = Color3.fromRGB(255, 255, 255) txt.TextSize = 14 txt.Font = Enum.Font.GothamBold txt.Parent = notif notif:TweenPosition(UDim2.new(0.5, -125, 0, 10), "Out", "Quad", 0.5) wait(2) notif:TweenPosition(UDim2.new(0.5, -125, 0, -50), "In", "Quad", 0.5) wait(0.5) notif:Destroy() break end end end end end end)
+
+spawn(function() while wait(1) do if tpCamaEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "bed") then player.Character.HumanoidRootPart.CFrame = v.CFrame + Vector3.new(0, 3, 0) break end end end end end)
+
+spawn(function() while wait(0.5) do if autoDestroyBedEnabled and player.Character then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "bed") then v:Destroy() end end end end)
+
+spawn(function() while wait(0.5) do if invisibleEnabled and player.Character then for _, part in ipairs(player.Character:GetDescendants()) do if part:IsA("BasePart") or part:IsA("Decal") then part.Transparency = 1 end end end end)
+
+spawn(function() while wait(1) do if tiempoPartidaEnabled then local elapsed = math.floor(tick() - gameStartTime) local mins = math.floor(elapsed / 60) local secs = elapsed % 60 local notif = Instance.new("Frame") notif.Size = UDim2.new(0, 200, 0, 30) notif.Position = UDim2.new(0, 10, 0, 80) notif.BackgroundColor3 = Color3.fromRGB(0, 0, 0) notif.BackgroundTransparency = 0.5 notif.BorderSizePixel = 0 notif.Parent = playerGui Instance.new("UICorner", notif).CornerRadius = UDim.new(0, 6) local txt = Instance.new("TextLabel") txt.Size = UDim2.new(1, 0, 1, 0) txt.BackgroundTransparency = 1 txt.Text = "⏱ " .. mins .. ":" .. (secs < 10 and "0" or "") .. secs txt.TextColor3 = Color3.fromRGB(255, 255, 255) txt.TextSize = 16 txt.Font = Enum.Font.GothamBlack txt.Parent = notif wait(1) notif:Destroy() end end end)
+
+spawn(function() while wait(0.2) do if autoFarmIron or autoFarmGold or autoFarmDiamond or autoFarmEmerald then if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") then local name = string.lower(v.Name) local target = false if autoFarmIron and name:find("iron") then target = true elseif autoFarmGold and name:find("gold") then target = true elseif autoFarmDiamond and name:find("diamond") then target = true elseif autoFarmEmerald and name:find("emerald") then target = true end if target and (hrp.Position - v.Position).Magnitude < 100 then hrp.CFrame = v.CFrame + Vector3.new(0, 3, 0) break end end end end end end end)
+
+spawn(function() while wait(0.1) do if autoHitEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") if tool then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("Humanoid") and p.Character.Humanoid.Health > 0 then local hrp = p.Character:FindFirstChild("HumanoidRootPart") local myHrp = player.Character:FindFirstChild("HumanoidRootPart") if hrp and myHrp and (hrp.Position - myHrp.Position).Magnitude <= autoHitRange then tool:Activate() break end end end end end end end)
+
+spawn(function() while wait(0.15) do if autoBridgeEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool") if tool then if tool.Parent == player.Backpack then tool.Parent = player.Character wait(0.1) end local VirtualInputManager = game:GetService("VirtualInputManager") VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0) wait(0.05) VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0) end end end end)
+
+spawn(function() while wait(0.15) do if scaffoldEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool") if tool then if tool.Parent == player.Backpack then tool.Parent = player.Character wait(0.1) end local VirtualInputManager = game:GetService("VirtualInputManager") VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0) wait(0.05) VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0) end end end end)
+
+spawn(function() while wait(0.3) do if teleportIron or teleportGold or teleportDiamond or teleportEmerald then if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") then local name = string.lower(v.Name) local tp = false if teleportIron and name:find("iron") then tp = true elseif teleportGold and name:find("gold") then tp = true elseif teleportDiamond and name:find("diamond") then tp = true elseif teleportEmerald and name:find("emerald") then tp = true end if tp then hrp.CFrame = v.CFrame + Vector3.new(0, 3, 0) break end end end end end end end)
+
+spawn(function() while wait(0.1) do if autoClickerEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") if tool then tool:Activate() end end end end)
+
+spawn(function() while wait(0.2) do if autoPearlEnabled and player.Character then local hrp = player.Character:FindFirstChild("HumanoidRootPart") if hrp and hrp.Position.Y < 10 then for _, v in ipairs(player.Backpack:GetChildren()) do if v:IsA("Tool") and string.find(string.lower(v.Name), "pearl") then v.Parent = player.Character wait(0.1) local VirtualInputManager = game:GetService("VirtualInputManager") VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0) wait(0.05) VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0) break end end end end end end)
+
+spawn(function() while wait(0.5) do if autoDefendEnabled and player.Character then local hrp = player.Character:FindFirstChild("HumanoidRootPart") if hrp then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "bed") then local dist = (hrp.Position - v.Position).Magnitude if dist < 10 then local tool = player.Character:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool") if tool and tool.Parent == player.Backpack then tool.Parent = player.Character wait(0.1) end if tool then tool:Activate() end break end end end end end end end)
+
+spawn(function() while wait(1) do if bedAlertEnabled then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "bed") then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then local dist = (p.Character.HumanoidRootPart.Position - v.Position).Magnitude if dist < 5 then local notif = Instance.new("Frame") notif.Size = UDim2.new(0, 250, 0, 40) notif.Position = UDim2.new(0.5, -125, 0, -50) notif.BackgroundColor3 = Color3.fromRGB(180, 40, 40) notif.BorderSizePixel = 0 notif.Parent = ScreenGui Instance.new("UICorner", notif).CornerRadius = UDim.new(0, 6) local txt = Instance.new("TextLabel") txt.Size = UDim2.new(1, 0, 1, 0) txt.BackgroundTransparency = 1 txt.Text = "¡Cama bajo ataque!" txt.TextColor3 = Color3.fromRGB(255, 255, 255) txt.TextSize = 14 txt.Font = Enum.Font.GothamBold txt.Parent = notif notif:TweenPosition(UDim2.new(0.5, -125, 0, 10), "Out", "Quad", 0.5) wait(2) notif:TweenPosition(UDim2.new(0.5, -125, 0, -50), "In", "Quad", 0.5) wait(0.5) notif:Destroy() break end end end end end end end end)
+
+spawn(function() while wait(0.1) do if autoRepairEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "bed") then local dist = (hrp.Position - v.Position).Magnitude if dist < 10 then local tool = player.Character:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool") if tool then if tool.Parent == player.Backpack then tool.Parent = player.Character wait(0.1) end tool:Activate() end break end end end end end end)
+
+spawn(function() while wait(0.3) do if antiPuenteEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "wool") or string.find(string.lower(v.Name), "block") then if (hrp.Position - v.Position).Magnitude < 8 and v.Position.Y < hrp.Position.Y then v:Destroy() end end end end end end)
+
+spawn(function() while wait(0.5) do if fireballDefenseEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then if (hrp.Position - p.Character.HumanoidRootPart.Position).Magnitude < 15 then local tool = player.Character:FindFirstChildOfClass("Tool") if tool and string.find(string.lower(tool.Name), "fireball") then tool:Activate() break end end end end end end end)
+
+spawn(function() while wait(0.5) do if pearlClutchEnabled and player.Character then local hrp = player.Character:FindFirstChild("HumanoidRootPart") if hrp and hrp.Position.Y < 10 then for _, v in ipairs(player.Backpack:GetChildren()) do if v:IsA("Tool") and string.find(string.lower(v.Name), "pearl") then v.Parent = player.Character wait(0.1) v:Activate() break end end end end end end)
+
+spawn(function() while wait(0.5) do if autoGappleEnabled and player.Character then local humanoid = player.Character:FindFirstChildOfClass("Humanoid") if humanoid and humanoid.Health < humanoid.MaxHealth * 0.5 then for _, v in ipairs(player.Backpack:GetChildren()) do if v:IsA("Tool") and string.find(string.lower(v.Name), "apple") then v.Parent = player.Character wait(0.1) v:Activate() break end end end end end end)
+
+spawn(function() while wait(0.3) do if autoGGEnabled then local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid") if humanoid and humanoid.Health <= 0 then wait(0.5) game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("gg", "All") wait(5) end end end)
+
+spawn(function() while wait(0.5) do if autoBailarEnabled and player.Character then local humanoid = player.Character:FindFirstChildOfClass("Humanoid") if humanoid then humanoid:Move(Vector3.new(0, 0, 0), true) wait(0.2) humanoid.Jump = true end end end)
+
+spawn(function() while wait(0.2) do if silentAimProyectilEnabled and player.Character then local tool = player.Character:FindFirstChildOfClass("Tool") if tool and (string.find(string.lower(tool.Name), "egg") or string.find(string.lower(tool.Name), "snowball")) then local target = nil local bestDist = math.huge for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("Head") then local pos = workspace.CurrentCamera:WorldToViewportPoint(p.Character.Head.Position) if pos.Z > 0 then local dist = (Vector2.new(pos.X, pos.Y) - workspace.CurrentCamera.ViewportSize/2).Magnitude if dist < bestDist then bestDist = dist target = p end end end end if target then tool:Activate() end end end end end)
+
+spawn(function() while wait(0.3) do if rangoEnabled then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("Head") then local head = p.Character.Head local billboard = head:FindFirstChild("RangoBillboard") if not billboard then billboard = Instance.new("BillboardGui") billboard.Name = "RangoBillboard" billboard.Size = UDim2.new(0, 100, 0, 30) billboard.StudsOffset = Vector3.new(0, 2, 0) billboard.AlwaysOnTop = true billboard.Parent = head local label = Instance.new("TextLabel") label.Size = UDim2.new(1, 0, 1, 0) label.BackgroundTransparency = 1 label.Text = "Lv. ?" label.TextColor3 = Color3.fromRGB(255, 255, 255) label.TextSize = 12 label.Font = Enum.Font.GothamBold label.Parent = billboard end end end end end end)
+
+spawn(function() while wait(0.3) do if espTrampasEnabled then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and (string.find(string.lower(v.Name), "trap") or string.find(string.lower(v.Name), "spike")) then local hl = v:FindFirstChild("TrampaESP") if not hl then hl = Instance.new("Highlight") hl.Name = "TrampaESP" hl.FillColor = Color3.fromRGB(255, 0, 0) hl.FillTransparency = 0.5 hl.Parent = v end hl.Enabled = true hl.Adornee = v end end end end end)
+
+spawn(function() while wait(1) do if logMuertesEnabled then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character then local humanoid = p.Character:FindFirstChildOfClass("Humanoid") if humanoid and humanoid.Health <= 0 then local notif = Instance.new("Frame") notif.Size = UDim2.new(0, 200, 0, 30) notif.Position = UDim2.new(1, -210, 0, 10) notif.BackgroundColor3 = Color3.fromRGB(0, 0, 0) notif.BackgroundTransparency = 0.5 notif.BorderSizePixel = 0 notif.Parent = playerGui Instance.new("UICorner", notif).CornerRadius = UDim.new(0, 6) local txt = Instance.new("TextLabel") txt.Size = UDim2.new(1, 0, 1, 0) txt.BackgroundTransparency = 1 txt.Text = "☠ " .. p.Name .. " murió" txt.TextColor3 = Color3.fromRGB(255, 100, 100) txt.TextSize = 12 txt.Font = Enum.Font.GothamBold txt.Parent = notif wait(3) notif:Destroy() end end end end end end)
+
+spawn(function() while wait(0.2) do if verInventarioEnabled then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character then local head = p.Character:FindFirstChild("Head") local billboard = head and head:FindFirstChild("InvBillboard") if not billboard and head then billboard = Instance.new("BillboardGui") billboard.Name = "InvBillboard" billboard.Size = UDim2.new(0, 150, 0, 20) billboard.StudsOffset = Vector3.new(0, 2.5, 0) billboard.AlwaysOnTop = true billboard.Parent = head local label = Instance.new("TextLabel") label.Size = UDim2.new(1, 0, 1, 0) label.BackgroundTransparency = 1 label.Text = "" label.TextColor3 = Color3.fromRGB(255, 255, 255) label.TextSize = 10 label.Font = Enum.Font.Gotham label.Parent = billboard end if billboard and head then local items = {} for _, v in ipairs(p.Backpack:GetChildren()) do if v:IsA("Tool") then table.insert(items, v.Name) end end billboard.TextLabel.Text = table.concat(items, ", ") end end end end end end)
+
+RunService.RenderStepped:Connect(function()
+    if speedEnabled and player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.WalkSpeed = speedVal end
+    if jumpEnabled and player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.JumpPower = jumpVal end
+    if hitboxEnabled then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then p.Character.HumanoidRootPart.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize) p.Character.HumanoidRootPart.Transparency = 0.7 p.Character.HumanoidRootPart.CanCollide = false end end end
+    if pullEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local myRoot = player.Character.HumanoidRootPart local targetPos = myRoot.CFrame + (myRoot.CFrame.LookVector * 4) for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then p.Character.HumanoidRootPart.CFrame = targetPos p.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0) end end end
+    if flyEnabled and player.Character then local hrp = player.Character:FindFirstChild("HumanoidRootPart") local hum = player.Character:FindFirstChildOfClass("Humanoid") if hrp and hum then hum.PlatformStand = true local dir = Vector3.zero if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir = dir + workspace.CurrentCamera.CFrame.LookVector end if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir = dir - workspace.CurrentCamera.CFrame.LookVector end if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir = dir - workspace.CurrentCamera.CFrame.RightVector end if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir = dir + workspace.CurrentCamera.CFrame.RightVector end if UserInputService:IsKeyDown(Enum.KeyCode.Space) then dir = dir + Vector3.new(0, 1, 0) end if dir.Magnitude > 0 then hrp.CFrame = hrp.CFrame + dir.Unit * flySpeed * 0.02 end hrp.Velocity = Vector3.zero end end
+    if tracersActive and player.Character then local myChest = player.Character:FindFirstChild("UpperTorso") or player.Character:FindFirstChild("Torso") or player.Character:FindFirstChild("HumanoidRootPart") if myChest then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character then local container = p.Character:FindFirstChild("TracerContainer") local head = p.Character:FindFirstChild("Head") if container and head then local linePart = container:FindFirstChild("LineBeam") if linePart then local p1 = myChest.Position local p2 = head.Position local distance = (p1 - p2).Magnitude linePart.Size = Vector3.new(0.12, 0.12, distance) linePart.CFrame = CFrame.new(p1, p2) * CFrame.new(0, 0, -distance / 2) end end end end end end
+    if aimbotEnabled or aimbotFOV then local target = nil local bestDist = fovRadius for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character and p.Character:FindFirstChild("Head") and p.Character:FindFirstChild("Humanoid") and p.Character.Humanoid.Health > 0 then local pos = workspace.CurrentCamera:WorldToViewportPoint(p.Character.Head.Position) if pos.Z > 0 then local dist = (Vector2.new(pos.X, pos.Y) - workspace.CurrentCamera.ViewportSize/2).Magnitude if dist < bestDist then bestDist = dist target = p end end end end if target and target.Character and target.Character:FindFirstChild("Head") then workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, target.Character.Head.Position) end end
+    if bunnyHopEnabled and player.Character and player.Character:FindFirstChild("Humanoid") then local hum = player.Character.Humanoid if hum.FloorMaterial ~= Enum.Material.Air then hum.Jump = true end end
+    if autoVoidEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then local hrp = player.Character.HumanoidRootPart if hrp.Position.Y < -50 then hrp.CFrame = CFrame.new(0, 30, 0) end end
+    if antiKBEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then player.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0) end
+    if fullbrightEnabled then game:GetService("Lighting").Brightness = 3 game:GetService("Lighting").ClockTime = 14 end
+    if chamsEnabled then for _, p in pairs(Players:GetPlayers()) do if p ~= player and p.Character then for _, v in ipairs(p.Character:GetDescendants()) do if v:IsA("BasePart") and v.Transparency < 0.5 then v.Transparency = 0.5 v.Color = Color3.fromRGB(255, 0, 0) end end end end end
+    if espIronEnabled or espGoldEnabled or espDiamondEnabled or espEmeraldEnabled then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") then local name = string.lower(v.Name) local color = nil if espIronEnabled and name:find("iron") then color = Color3.fromRGB(200, 200, 200) elseif espGoldEnabled and name:find("gold") then color = Color3.fromRGB(255, 215, 0) elseif espDiamondEnabled and name:find("diamond") then color = Color3.fromRGB(0, 255, 255) elseif espEmeraldEnabled and name:find("emerald") then color = Color3.fromRGB(0, 255, 0) end if color then local hl = v:FindFirstChild("GenESP") if not hl then hl = Instance.new("Highlight") hl.Name = "GenESP" hl.FillTransparency = 0.5 hl.Parent = v end hl.FillColor = color hl.OutlineColor = color hl.Enabled = true hl.Adornee = v end end end end
+    if espBedsEnabled then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and string.find(string.lower(v.Name), "bed") then local hl = v:FindFirstChild("BedESP") if not hl then hl = Instance.new("Highlight") hl.Name = "BedESP" hl.FillTransparency = 0.5 hl.Parent = v end hl.FillColor = Color3.fromRGB(255, 100, 100) hl.OutlineColor = Color3.fromRGB(255, 0, 0) hl.Enabled = true hl.Adornee = v end end end
+    if espChestsEnabled then for _, v in ipairs(workspace:GetDescendants()) do if v:IsA("BasePart") and (string.find(string.lower(v.Name), "chest") or string.find(string.lower(v.Name), "cofre")) then local hl = v:FindFirstChild("ChestESP") if not hl then hl = Instance.new("Highlight") hl.Name = "ChestESP" hl.FillColor = Color3.fromRGB(255, 215, 0) hl.FillTransparency = 0.5 hl.Parent = v end hl.Enabled = true hl.Adornee = v end end end
+end)
+
+RunService.Stepped:Connect(function()
+    if noclipEnabled and player.Character then for _, v in ipairs(player.Character:GetDescendants()) do if v:IsA("BasePart") then v.CanCollide = false end end end
+end)
+
+local windowDragging = false
+local winMousePos, winFramePos
+
+TopBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        windowDragging = true
+        winMousePos = input.Position
+        winFramePos = Window.Position
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if windowDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - winMousePos
+        Window.Position = UDim2.new(winFramePos.X.Scale, winFramePos.X.Offset + delta.X, winFramePos.Y.Scale, winFramePos.Y.Offset + delta.Y)
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        windowDragging = false
+    end
+end)
+
+OpenButton.MouseButton1Click:Connect(function()
+    ScreenGui.Enabled = false
+    MainGui.Enabled = true
+end)
+
+MinimizeButton.MouseButton1Click:Connect(function()
+    MainGui.Enabled = false
+    ScreenGui.Enabled = true
+end)
