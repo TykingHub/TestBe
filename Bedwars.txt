@@ -143,24 +143,69 @@ TitleLabel.Parent = TopBar
 
 local executor = identifyexecutor and identifyexecutor() or "Desconocido"
 local startTime = tick()
+local userId = player.UserId
 
-local infoLabel = Instance.new("TextLabel")
-infoLabel.Size = UDim2.new(1, -50, 0, 14)
-infoLabel.Position = UDim2.new(0, 15, 0, 16)
-infoLabel.BackgroundTransparency = 1
-infoLabel.Text = "Executor: " .. executor .. " | Usuario: " .. player.Name .. " | Cuenta: " .. player.AccountAge .. " dias"
-infoLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
-infoLabel.TextSize = 9
-infoLabel.Font = Enum.Font.Gotham
-infoLabel.TextXAlignment = Enum.TextXAlignment.Left
-infoLabel.Parent = TopBar
+local infoFrame = Instance.new("Frame")
+infoFrame.Size = UDim2.new(0, 350, 0, 80)
+infoFrame.Position = UDim2.new(1, -360, 0, 40)
+infoFrame.BackgroundColor3 = Color3.fromRGB(15, 20, 30)
+infoFrame.BackgroundTransparency = 0.3
+infoFrame.BorderSizePixel = 0
+infoFrame.Parent = TopBar
+Instance.new("UICorner", infoFrame).CornerRadius = UDim.new(0, 8)
+
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(255, 200, 50)
+stroke.Thickness = 1
+stroke.Parent = infoFrame
+
+local skinImage = Instance.new("ImageLabel")
+skinImage.Size = UDim2.new(0, 50, 0, 50)
+skinImage.Position = UDim2.new(0, 10, 0.5, -25)
+skinImage.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+skinImage.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=420&height=420&format=png"
+skinImage.Parent = infoFrame
+Instance.new("UICorner", skinImage).CornerRadius = UDim.new(0, 25)
+
+local execLabel = Instance.new("TextLabel")
+execLabel.Size = UDim2.new(1, -70, 0, 18)
+execLabel.Position = UDim2.new(0, 65, 0, 8)
+execLabel.BackgroundTransparency = 1
+execLabel.Text = "Executor: " .. executor
+execLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+execLabel.TextSize = 10
+execLabel.Font = Enum.Font.GothamBold
+execLabel.TextXAlignment = Enum.TextXAlignment.Left
+execLabel.Parent = infoFrame
+
+local nameLabel = Instance.new("TextLabel")
+nameLabel.Size = UDim2.new(1, -70, 0, 20)
+nameLabel.Position = UDim2.new(0, 65, 0, 26)
+nameLabel.BackgroundTransparency = 1
+nameLabel.Text = player.Name
+nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+nameLabel.TextSize = 12
+nameLabel.Font = Enum.Font.GothamBold
+nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+nameLabel.Parent = infoFrame
+
+local timeLabel = Instance.new("TextLabel")
+timeLabel.Size = UDim2.new(1, -70, 0, 22)
+timeLabel.Position = UDim2.new(0, 65, 0, 48)
+timeLabel.BackgroundTransparency = 1
+timeLabel.Text = "Tiempo: 0m 0s"
+timeLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
+timeLabel.TextSize = 14
+timeLabel.Font = Enum.Font.GothamBlack
+timeLabel.TextXAlignment = Enum.TextXAlignment.Left
+timeLabel.Parent = infoFrame
 
 spawn(function()
-    while wait(10) do
+    while wait(1) do
         local elapsed = math.floor(tick() - startTime)
         local mins = math.floor(elapsed / 60)
         local secs = elapsed % 60
-        infoLabel.Text = "Executor: " .. executor .. " | Usuario: " .. player.Name .. " | Cuenta: " .. player.AccountAge .. " dias | Tiempo: " .. mins .. "m " .. secs .. "s"
+        timeLabel.Text = "Tiempo: " .. mins .. "m " .. secs .. "s"
     end
 end)
 
