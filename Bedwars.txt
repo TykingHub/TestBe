@@ -138,7 +138,8 @@ TitleLabel.Text = "Tyking x Wazin2 Bedwars Script"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
 TitleLabel.TextSize = 14
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.TextXAlignment = Enum.TextXAlignment.LeftTitleLabel.Parent = TopBar
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.Parent = TopBar
 
 OpenButton.MouseButton1Click:Connect(function()
     infoFrame.Visible = false
