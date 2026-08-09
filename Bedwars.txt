@@ -140,94 +140,6 @@ TitleLabel.TextSize = 14
 TitleLabel.Font = Enum.Font.GothamBold
 TitleLabel.TextXAlignment = Enum.TextXAlignment.LeftTitleLabel.Parent = TopBar
 
-local executor = identifyexecutor and identifyexecutor() or "Desconocido"
-local startTime = tick()
-local userId = player.UserId
-
-local infoCorner = Instance.new("UICorner")
-infoCorner.CornerRadius = UDim.new(0, 15)
-infoCorner.Parent = infoFrame
-
-local infoStroke = Instance.new("UIStroke")
-infoStroke.Color = Color3.fromRGB(255, 200, 50)
-infoStroke.Thickness = 2
-infoStroke.Parent = infoFrame
-
-local infoTitle = Instance.new("TextLabel")
-infoTitle.Size = UDim2.new(1, 0, 0, 35)
-infoTitle.Position = UDim2.new(0, 0, 0, 15)
-infoTitle.BackgroundTransparency = 1
-infoTitle.Text = "Tyking x Wazin2"
-infoTitle.TextColor3 = Color3.fromRGB(255, 200, 50)
-infoTitle.TextSize = 22
-infoTitle.Font = Enum.Font.GothamBlack
-infoTitle.ZIndex = 101
-infoTitle.Parent = infoFrame
-
-local infoSub = Instance.new("TextLabel")
-infoSub.Size = UDim2.new(1, 0, 0, 20)
-infoSub.Position = UDim2.new(0, 0, 0, 50)
-infoSub.BackgroundTransparency = 1
-infoSub.Text = "Bedwars Script - Funciones Beta"
-infoSub.TextColor3 = Color3.fromRGB(180, 180, 180)
-infoSub.TextSize = 12
-infoSub.Font = Enum.Font.Gotham
-infoSub.ZIndex = 101
-infoSub.Parent = infoFrame
-
-local skinImage = Instance.new("ImageLabel")
-skinImage.Size = UDim2.new(0, 100, 0, 100)
-skinImage.Position = UDim2.new(0.5, -50, 0, 80)
-skinImage.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
-skinImage.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=420&height=420&format=png"
-skinImage.ZIndex = 101
-skinImage.Parent = infoFrame
-local skinCorner = Instance.new("UICorner")
-skinCorner.CornerRadius = UDim.new(0, 50)
-skinCorner.Parent = skinImage
-
-local nameLabel = Instance.new("TextLabel")
-nameLabel.Size = UDim2.new(1, 0, 0, 30)
-nameLabel.Position = UDim2.new(0, 0, 0, 190)
-nameLabel.BackgroundTransparency = 1
-nameLabel.Text = player.DisplayName .. " (@" .. player.Name .. ")"
-nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-nameLabel.TextSize = 16
-nameLabel.Font = Enum.Font.GothamBold
-nameLabel.ZIndex = 101
-nameLabel.Parent = infoFrame
-
-local execLabel = Instance.new("TextLabel")
-execLabel.Size = UDim2.new(1, 0, 0, 20)
-execLabel.Position = UDim2.new(0, 0, 0, 218)
-execLabel.BackgroundTransparency = 1
-execLabel.Text = "Executor: " .. executor .. " | Cuenta: " .. player.AccountAge .. " dias"
-execLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
-execLabel.TextSize = 10
-execLabel.Font = Enum.Font.Gotham
-execLabel.ZIndex = 101
-execLabel.Parent = infoFrame
-
-local timeLabel = Instance.new("TextLabel")
-timeLabel.Size = UDim2.new(1, 0, 0, 25)
-timeLabel.Position = UDim2.new(0, 0, 0, 232)
-timeLabel.BackgroundTransparency = 1
-timeLabel.Text = "Tiempo: 0m 0s"
-timeLabel.TextColor3 = Color3.fromRG
-timeLabel.TextSize = 13
-timeLabel.Font = Enum.Font.GothamBlack
-timeLabel.ZIndex = 101
-timeLabel.Parent = infoFrame
-
-spawn(function()
-    while wait(1) do
-        local elapsed = math.floor(tick() - startTime)
-        local mins = math.floor(elapsed / 60)
-        local secs = elapsed % 60
-        timeLabel.Text = "Tiempo: " .. mins .. "m " .. secs .. "s"
-    end
-end)
-
 OpenButton.MouseButton1Click:Connect(function()
     infoFrame.Visible = false
     ScreenGui.Enabled = false
@@ -1023,16 +935,6 @@ UserInputService.InputEnded:Connect(function(input)
         windowDragging = false
     end
 end)
-
-local infoFrame = Instance.new("Frame")
-infoFrame.Size = UDim2.new(0, 380, 0, 260)
-infoFrame.Position = UDim2.new(0.5, -190, 0.5, -130)
-infoFrame.BackgroundColor3 = Color3.fromRGB(10, 15, 25)
-infoFrame.BackgroundTransparency = 0.1
-infoFrame.BorderSizePixel = 0
-infoFrame.Visible = true
-infoFrame.ZIndex = 100
-infoFrame.Parent = playerGui
 
 OpenButton.MouseButton1Click:Connect(function()
     ScreenGui.Enabled = false
