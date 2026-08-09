@@ -144,16 +144,6 @@ local executor = identifyexecutor and identifyexecutor() or "Desconocido"
 local startTime = tick()
 local userId = player.UserId
 
-local infoFrame = Instance.new("Frame")
-infoFrame.Size = UDim2.new(0, 380, 0, 260)
-infoFrame.Position = UDim2.new(0.5, -190, 0.5, -130)
-infoFrame.BackgroundColor3 = Color3.fromRGB(10, 15, 25)
-infoFrame.BackgroundTransparency = 0.1
-infoFrame.BorderSizePixel = 0
-infoFrame.Visible = true
-infoFrame.ZIndex = 100
-infoFrame.Parent = playerGui
-
 local infoCorner = Instance.new("UICorner")
 infoCorner.CornerRadius = UDim.new(0, 15)
 infoCorner.Parent = infoFrame
@@ -1033,6 +1023,16 @@ UserInputService.InputEnded:Connect(function(input)
         windowDragging = false
     end
 end)
+
+local infoFrame = Instance.new("Frame")
+infoFrame.Size = UDim2.new(0, 380, 0, 260)
+infoFrame.Position = UDim2.new(0.5, -190, 0.5, -130)
+infoFrame.BackgroundColor3 = Color3.fromRGB(10, 15, 25)
+infoFrame.BackgroundTransparency = 0.1
+infoFrame.BorderSizePixel = 0
+infoFrame.Visible = true
+infoFrame.ZIndex = 100
+infoFrame.Parent = playerGui
 
 OpenButton.MouseButton1Click:Connect(function()
     ScreenGui.Enabled = false
