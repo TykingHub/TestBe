@@ -152,7 +152,7 @@ infoFrame.BackgroundTransparency = 0.1
 infoFrame.BorderSizePixel = 0
 infoFrame.Visible = true
 infoFrame.ZIndex = 100
-infoFrame.Parent = MainGui
+infoFrame.Parent = playerGui
 
 local infoCorner = Instance.new("UICorner")
 infoCorner.CornerRadius = UDim.new(0, 15)
